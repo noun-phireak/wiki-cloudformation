@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mediawiki:
+    image: mediawiki
+    restart: always
+    ports:
+      - 8080:80
+    environment: 
+        DB_HOST: db
+        DB_PORT: 3306
+        DB_DATABASE: mediawiki
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+    volumes:
+      - ./images:/var/www/html/images
+    networks:
+        - mediawiki
+  db:
+    image: mysql
+    restart: always
+    environment:
+        MYSQL_DATABASE: mediawiki
+        MYSQl_USER: homestead
+        MYSQL_PASSWORD: secret
+        MYSQL_ROOT_PASSWORD: secret
+        SERVICE_TAGS: dev
+        SERVICE_NAME: mysql
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+        - mediawiki
+networks:
+  mediawiki:
